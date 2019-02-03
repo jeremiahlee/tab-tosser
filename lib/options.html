@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="module" src="./slider.js"></script>
+    <script type="module" src="./closed-tabs.js"></script>
+    <script type="module" src="./stats.js"></script>
+    <script type="module" src="./config.js"></script>
+    <script type="module" src="./options.js"></script>
+</head>
+<body>
+    <form>
+        <p id="paused" style="display: none">
+            <strong>Tab Tosser is currently paused.</strong> <a id="resumeLink" href="#resume">Resume</a>
+        </p>
+
+        <div>
+            <label for="ttl">Close tabs not opened within the last </label>
+            <select id="ttl"></select>
+        </div>
+
+        <p>Tab Tosser has helped you rid of <span id="totalTabsClosedCount">0</span> tabs since <span id="initDate">2019-01-15</span>.</p>
+
+        <div id="archivedTabsSection">
+            <p>Recently tossed tabs:</p>
+            <ul id="archivedTabs"></ul>
+            <a id="clearHistoryLink" href="#clearArchivedTabsHistory">Clear tossed tab history</a>
+        </div>
+    </form>
+</body>
+</html>
