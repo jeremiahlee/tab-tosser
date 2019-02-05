@@ -1,6 +1,6 @@
 {
     "name": "tab-tosser",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Automatically close tabs that have been ignored for too long. Free yourself of digital clutter.",
     "directories": {
         "lib": "lib",
