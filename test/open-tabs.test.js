@@ -7,6 +7,8 @@ import {
     removeExpiredTabs
 } from '../lib/open-tabs.js';
 
+import {getClosedTabs} from '../lib/closed-tabs.js';
+
 import {setTtl} from '../lib/config.js';
 
 import {
@@ -48,4 +50,41 @@ QUnit.test("open-tabs: removeExpiredTabs", async function(assert) {
     });
 
     assert.equal(initialOpenTabs.length - remainingOpenTabs.length, 2);
+});
+
+QUnit.test("open-tabs: removeExpiredTabs title check", async function(assert) {
+    // Firefox for Android does not default tab title to a string
+    // Tab Tosser should use the URL as the page title if none exists
+    
+    // Missing title tab test
+    const url = `https://www.example.com/titleless-tab`;
+
+    await browser.tabs.create({
+        active: false,
+        lastAccessed: 1000,
+        url: url,
+        title: undefined
+    });
+
+    await removeExpiredTabs();
+
+    let archivedTabs = await getClosedTabs();
+
+    const missingTitleTab = archivedTabs[archivedTabs.length - 1];
+    assert.equal(missingTitleTab[1].slice(0,10), url.slice(0,10));
+
+    // Short title test
+    await browser.tabs.create({
+        active: false,
+        lastAccessed: 1000,
+        url: url,
+        title: "123456789"
+    });
+
+    await removeExpiredTabs();
+
+    archivedTabs = await getClosedTabs();
+
+    const shortTitleTab = archivedTabs[archivedTabs.length - 1];
+    assert.equal(shortTitleTab[1].slice(0,10), url.slice(0,10));
 });
