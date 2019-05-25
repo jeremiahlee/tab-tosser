@@ -1,15 +1,15 @@
 // Fake the browser
-import browserFake from 'webextensions-api-fake';
+import browserFake from "webextensions-api-fake";
 global.browser = browserFake();
 
 import {
     findExpiredTabs,
     removeExpiredTabs
-} from '../lib/open-tabs.js';
+} from '../dist/lib/open-tabs.js';
 
-import {getClosedTabs} from '../lib/closed-tabs.js';
+import {getClosedTabs} from '../dist/lib/closed-tabs.js';
 
-import {setTtl} from '../lib/config.js';
+import {setTtl} from '../dist/lib/config.js';
 
 import {
     createTab,
@@ -55,7 +55,7 @@ QUnit.test("open-tabs: removeExpiredTabs", async function(assert) {
 QUnit.test("open-tabs: removeExpiredTabs title check", async function(assert) {
     // Firefox for Android does not default tab title to a string
     // Tab Tosser should use the URL as the page title if none exists
-    
+
     // Missing title tab test
     const url = `https://www.example.com/titleless-tab`;
 

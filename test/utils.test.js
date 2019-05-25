@@ -1,8 +1,7 @@
-const jsdom = require("jsdom");
-const {JSDOM} = jsdom;
+import {JSDOM} from "jsdom";
 global.document = new JSDOM().window.document;
 
-import {formatPageTitle} from "../lib/utils.js";
+import {formatPageTitle} from "../dist/lib/utils.js";
 
 QUnit.test("utils: formatPageTitle: 40 character max", async function(assert) {
     const tooLongPageTitle = "0123456789 0123456789 0123456789 0123456789";

@@ -1,12 +1,12 @@
 // Fake the browser
-import browserFake from 'webextensions-api-fake';
+import browserFake from "webextensions-api-fake";
 global.browser = browserFake();
 
 import {
     clearArchivedTabsHistory,
     getClosedTabs,
     archiveTabs
-} from '../lib/closed-tabs.js';
+} from '../dist/lib/closed-tabs.js';
 
 QUnit.test("closed-tabs: archiveTabs", async function(assert) {
     const ttl = 3;
@@ -14,15 +14,15 @@ QUnit.test("closed-tabs: archiveTabs", async function(assert) {
 
     await archiveTabs([
         [
-            "https://www.example.com/tab-archive-0", 
-            "Test tab archive 0", 
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000), 
+            "https://www.example.com/tab-archive-0",
+            "Test tab archive 0",
+            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
             now + (ttl * 24 * 60 * 60 * 1000)
         ],
         [
-            "https://www.example.com/tab-archive-1", 
+            "https://www.example.com/tab-archive-1",
             "Test tab archive 1",
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000), 
+            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
             now + (ttl * 24 * 60 * 60 * 1000)
         ]
     ]);
@@ -30,15 +30,15 @@ QUnit.test("closed-tabs: archiveTabs", async function(assert) {
     // archiveTabs twice to ensure the archive is being appended to
     await archiveTabs([
         [
-            "https://www.example.com/tab-archive-2", 
-            "Test tab archive 2", 
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000), 
+            "https://www.example.com/tab-archive-2",
+            "Test tab archive 2",
+            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
             now + (ttl * 24 * 60 * 60 * 1000)
         ],
         [
-            "https://www.example.com/tab-archive-3", 
+            "https://www.example.com/tab-archive-3",
             "Test tab archive 3",
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000), 
+            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
             now + (ttl * 24 * 60 * 60 * 1000)
         ]
     ]);
@@ -69,21 +69,21 @@ QUnit.test("closed-tabs: purgeArchivedTabs: only 1000", async function(assert) {
 
     await archiveTabs([
         [
-            "https://www.example.com/tab-archive-0", 
-            "Test tab archive 0", 
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000), 
+            "https://www.example.com/tab-archive-0",
+            "Test tab archive 0",
+            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
             now + (ttl * 24 * 60 * 60 * 1000)
         ],
         [
-            "https://www.example.com/tab-archive-1", 
+            "https://www.example.com/tab-archive-1",
             "Test tab archive 1",
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000), 
+            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
             now + (ttl * 24 * 60 * 60 * 1000)
         ]
     ]);
 
     const archivedTabs = await getClosedTabs();
-    
+
     assert.equal(archivedTabs.length, 1000);
     assert.equal(archivedTabs[0][0], 2);
 });
@@ -94,15 +94,15 @@ QUnit.test("closed-tabs: purgeArchivedTabs: purge date", async function(assert) 
 
     const closedTabsFake = [
         [
-            "https://www.example.com/tab-archive-0", 
-            "Test tab archive 0", 
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000), 
+            "https://www.example.com/tab-archive-0",
+            "Test tab archive 0",
+            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
             now - (ttl * 24 * 60 * 60 * 1000) // < now, > last accessed
         ],
         [
-            "https://www.example.com/tab-archive-1", 
+            "https://www.example.com/tab-archive-1",
             "Test tab archive 1",
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000), 
+            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
             now + (ttl * 24 * 60 * 60 * 1000)
         ]
     ];
@@ -114,15 +114,15 @@ QUnit.test("closed-tabs: purgeArchivedTabs: purge date", async function(assert) 
 
     await archiveTabs([
         [
-            "https://www.example.com/tab-archive-0", 
-            "Test tab archive 2", 
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000), 
+            "https://www.example.com/tab-archive-0",
+            "Test tab archive 2",
+            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
             now + (ttl * 24 * 60 * 60 * 1000)
         ],
         [
-            "https://www.example.com/tab-archive-1", 
+            "https://www.example.com/tab-archive-1",
             "Test tab archive 3",
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000), 
+            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
             now + (ttl * 24 * 60 * 60 * 1000)
         ]
     ]);
@@ -140,15 +140,15 @@ QUnit.test("closed-tabs: clearArchivedTabsHistory", async function(assert) {
 
     await archiveTabs([
         [
-            "https://www.example.com/tab-archive-0", 
-            "Test tab archive 0", 
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000), 
+            "https://www.example.com/tab-archive-0",
+            "Test tab archive 0",
+            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
             now + (ttl * 24 * 60 * 60 * 1000)
         ],
         [
-            "https://www.example.com/tab-archive-1", 
+            "https://www.example.com/tab-archive-1",
             "Test tab archive 1",
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000), 
+            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
             now + (ttl * 24 * 60 * 60 * 1000)
         ]
     ]);

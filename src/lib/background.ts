@@ -1,6 +1,5 @@
-import {removeExpiredTabs} from "./open-tabs.js";
-import {isEnabled, backFromHiatus, pause, isPaused, isTimeToResume, resume} from "./config.js";
-import {findExpiredTabs} from "./open-tabs.js";
+import {backFromHiatus, isEnabled, isPaused, isTimeToResume, pause, resume} from "./config.js";
+import {findExpiredTabs, removeExpiredTabs} from "./open-tabs.js";
 
 // Open the explainer/initial settings page on first run
 (async () => {
@@ -49,14 +48,14 @@ browser.idle.onStateChanged.addListener(
     }
 );
 
-// When extension is re-enabled, clear pause state 
+// When extension is re-enabled, clear pause state
 browser.management.onEnabled.addListener(async (info) => {
     // This listener will hear the enabling of any add-on
     // but we only care about the enabling of _this_ add-on
 
-    let self = await browser.management.getSelf();
+    const self = await browser.management.getSelf();
 
-    if (info.id === self.id) {
+    if ((typeof self !== "undefined") && (info.id === self.id)) {
         resume();
     }
 });

@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "strictNullChecks": true,
+        "module": "es2015",
+        "target": "es2018",
+        "allowJs": false
+    }
+}

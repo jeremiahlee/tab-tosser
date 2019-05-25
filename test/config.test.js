@@ -1,5 +1,5 @@
 // Fake the browser
-import browserFake from 'webextensions-api-fake';
+import browserFake from "webextensions-api-fake";
 global.browser = browserFake();
 
 import {
@@ -15,7 +15,7 @@ import {
     pause,
     resume,
     setTtl
-} from '../lib/config.js';
+} from "../dist/lib/config.js";
 
 QUnit.test("config: enable", async function(assert) {
     await enable();
@@ -63,11 +63,11 @@ QUnit.test("config: pause", async function(assert) {
 
     const ttls = [3, 4, 5, 6, 7, 14];
     const pauseTtls = [2, 3, 4, 5, 6, 7];
-    
+
     for (let i = 0; i < ttls.length; i++) {
         const ttl = ttls[i];
         const pauseTtl = pauseTtls[i];
-        
+
         await setTtl(ttl);
         await pause();
 
@@ -75,7 +75,7 @@ QUnit.test("config: pause", async function(assert) {
 
         const storage = await browser.storage.local.get({pauseUntil: 0});
         const actualPauseDate = new Date(storage.pauseUntil).toISOString().substring(0,10);
-        
+
         assert.equal(actualPauseDate, expectedPauseDate);
     }
 });
@@ -92,7 +92,7 @@ QUnit.test("config: backFromHiatus true", async function(assert) {
     const now = new Date().valueOf();
     const ttlFake = 3;
     const lastCheckFake = new Date(now - ((ttlFake + 1) * 24 * 60 * 60 * 1000)).toISOString(); // 1 day beyond the TTL
-    
+
     await browser.storage.local.set({
         lastCheck: lastCheckFake,
         ttl: ttlFake
@@ -108,7 +108,7 @@ QUnit.test("config: backFromHiatus false", async function(assert) {
     const now = new Date().valueOf();
     const ttlFake = 3;
     const lastCheckFake = new Date(now - ((ttlFake - 1) * 24 * 60 * 60 * 1000)).toISOString(); // 1 day less than the TTL
-    
+
     await browser.storage.local.set({
         lastCheck: lastCheckFake,
         ttl: ttlFake

@@ -1,16 +1,16 @@
 // Fake the browser
-import browserFake from 'webextensions-api-fake';
+import browserFake from "webextensions-api-fake";
 global.browser = browserFake();
 
 import {
     countClosedTabs,
     totalTabsClosedCount,
     totalTabsClosedCountSince
-} from "../lib/stats.js";
+} from "../dist/lib/stats.js";
 
 QUnit.test("stats: countClosedTabs and totalTabsClosedCount", async function(assert) {
     const initialCount = await totalTabsClosedCount();
-    
+
     await countClosedTabs(10);
     await countClosedTabs(22);
 

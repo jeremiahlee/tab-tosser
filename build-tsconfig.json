@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "sourceMap": false,
+        "strictNullChecks": true,
+        "module": "ES6",
+        "target": "ES2017"
+    },
+    "include": [
+        "lib/**/*.ts"
+    ]
+}

@@ -1,4 +1,4 @@
-import {getLabelForValue} from "../lib/slider.js";
+import {getLabelForValue} from "../dist/lib/slider.js";
 
 QUnit.test("slider: days", function(assert) {
     assert.equal(getLabelForValue(3), "3 days");
