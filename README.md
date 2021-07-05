@@ -33,4 +33,6 @@ These are the permissions specified in manifest.json and the justification for r
 
 ## Copyright
 
-The source is viewable, but not free as in speech. Please see the [license](LICENSE.md) for more information. I cannot accept pull requests due to the legal complexities of contribution assignment. You may _privately_ fork this project in order to modify it for your personal use. You may not redistribute your modifications with my original source without my permission.
+©2019 Jeremiah Lee. [Mozilla Public License Version 2.0](LICENSE.md)
+
+“Tab Tosser” and the tab hat smiley face are trademarks of Jeremiah Lee.
