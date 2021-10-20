@@ -1,0 +1,10 @@
+_ignore
+dist/
+dist-releases/
+LICENSE.md
+node_modules/
+package.json
+package-lock.json
+src/**/*.js
+src/**/*.js.map
+src/lib/styles.css

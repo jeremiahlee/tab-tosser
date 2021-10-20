@@ -1,0 +1,10 @@
+{
+	"arrowParens": "always",
+	"printWidth": 100000,
+	"proseWrap": "never",
+	"quoteProps": "consistent",
+	"semi": true,
+	"tabWidth": 4,
+	"trailingComma": "none",
+	"useTabs": true
+}

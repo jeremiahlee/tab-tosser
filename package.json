@@ -1,49 +1,48 @@
 {
-    "name": "tab-tosser",
-    "version": "2.0.0",
-    "description": "Automatically close tabs that have been ignored for too long. Free yourself of digital clutter.",
-    "directories": {
-        "lib": "lib",
-        "test": "test"
-    },
-    "scripts": {
-        "test": "npm run build && node -r esm node_modules/qunit/bin/qunit",
-        "dev": "tsc -p tsconfig.dev.json && broccoli build",
-        "dev:css": "./node_modules/.bin/tailwind build tailwind.config.css -c tailwind.config.js -o lib/styles.css",
-        "build:css": "./node_modules/.bin/postcss tailwind.config.css -o lib/styles.css",
-        "build": "tsc -p tsconfig.release.json && broccoli build",
-        "release": "BROCCOLI_ENV=release npm run build"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/jeremiahlee/tab-tosser.git"
-    },
-    "author": "Jeremiah Lee",
-    "license": "MPL-2.0",
-    "private": true,
-    "bugs": {
-        "url": "https://github.com/jeremiahlee/tab-tosser/issues"
-    },
-    "homepage": "https://www.jeremiahlee.com/tab-tosser/",
-    "dependencies": {},
-    "devDependencies": {
-        "@fullhuman/postcss-purgecss": "^1.2.0",
-        "@types/firefox-webext-browser": "^67.0.1",
-        "autoprefixer": "^9.5.1",
-        "broccoli": "^3.0.0",
-        "broccoli-cli": "^1.0.0",
-        "broccoli-funnel": "^2.0.2",
-        "broccoli-merge-trees": "^3.0.2",
-        "broccoli-typescript-compiler": "^4.1.0",
-        "cssnano": "^4.1.10",
-        "esm": "^3.2.25",
-        "jsdom": "^15.1.0",
-        "postcss-cli": "^6.1.2",
-        "qunit": "^2.9.2",
-        "tailwindcss": "^0.7.3",
-        "ts-node": "^8.1.1",
-        "tslint": "^5.16.0",
-        "typescript": "^3.4.5",
-        "webextensions-api-fake": "^0.8.0"
-    }
+	"name": "tab-tosser",
+	"version": "2.0.0",
+	"description": "Automatically close tabs that have been ignored for too long. Free yourself of digital clutter.",
+	"directories": {
+		"lib": "lib",
+		"test": "test"
+	},
+	"scripts": {
+		"test": "npm run build && node -r esm node_modules/qunit/bin/qunit",
+		"dev": "tsc -p tsconfig.dev.json && broccoli build",
+		"dev:css": "./node_modules/.bin/tailwind build tailwind.config.css -c tailwind.config.js -o lib/styles.css",
+		"build:css": "./node_modules/.bin/postcss tailwind.config.css -o lib/styles.css",
+		"build": "tsc -p tsconfig.release.json && broccoli build",
+		"release": "BROCCOLI_ENV=release npm run build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/jeremiahlee/tab-tosser.git"
+	},
+	"author": "Jeremiah Lee",
+	"license": "MPL-2.0",
+	"private": true,
+	"bugs": {
+		"url": "https://github.com/jeremiahlee/tab-tosser/issues"
+	},
+	"homepage": "https://www.jeremiahlee.com/tab-tosser/",
+	"devDependencies": {
+		"@fullhuman/postcss-purgecss": "^1.2.0",
+		"@types/firefox-webext-browser": "^67.0.1",
+		"autoprefixer": "^9.5.1",
+		"broccoli": "^3.0.0",
+		"broccoli-cli": "^1.0.0",
+		"broccoli-funnel": "^2.0.2",
+		"broccoli-merge-trees": "^3.0.2",
+		"broccoli-typescript-compiler": "^4.1.0",
+		"cssnano": "^4.1.10",
+		"esm": "^3.2.25",
+		"jsdom": "^15.1.0",
+		"postcss-cli": "^6.1.2",
+		"prettier": "^2.4.1",
+		"qunit": "^2.9.2",
+		"tailwindcss": "^0.7.3",
+		"ts-node": "^8.1.1",
+		"typescript": "^3.4.5",
+		"webextensions-api-fake": "^0.8.0"
+	}
 }

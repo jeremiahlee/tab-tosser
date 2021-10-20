@@ -1,9 +1,9 @@
 {
-    "compilerOptions": {
-        "sourceMap": false,
-        "strictNullChecks": true,
-        "module": "es2015",
-        "target": "es2018",
-        "allowJs": false
-    }
+	"compilerOptions": {
+		"sourceMap": false,
+		"strictNullChecks": true,
+		"module": "es2015",
+		"target": "es2018",
+		"allowJs": false
+	}
 }

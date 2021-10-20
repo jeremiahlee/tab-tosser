@@ -1,32 +1,27 @@
 {
-    "manifest_version": 2,
-    "name": "Tab Tosser",
-    "author": "Jeremiah Lee",
-    "developer": {
-        "name": "Jeremiah Lee",
-        "url": "https://www.jeremiahlee.com/"
-    },
-    "version": "2.0.0",
-    "description": "Automatically close tabs that have been ignored for too long. Free yourself of digital clutter.",
-    "homepage_url": "https://www.jeremiahlee.com/tab-tosser/",
-    "icons": {
-        "500": "icon.svg"
-    },
-    "permissions": [
-        "idle",
-        "management",
-        "storage",
-        "tabs"
-    ],
-    "background": {
-        "page": "./lib/background.html"
-    },
-    "options_ui": {
-        "page": "./lib/options.html"
-    },
-    "applications": {
-        "gecko": {
-            "id": "{21b1ad73-381b-b441-8692-f6065d838c87}"
-        }
-    }
+	"manifest_version": 2,
+	"name": "Tab Tosser",
+	"author": "Jeremiah Lee",
+	"developer": {
+		"name": "Jeremiah Lee",
+		"url": "https://www.jeremiahlee.com/"
+	},
+	"version": "2.0.0",
+	"description": "Automatically close tabs that have been ignored for too long. Free yourself of digital clutter.",
+	"homepage_url": "https://www.jeremiahlee.com/tab-tosser/",
+	"icons": {
+		"500": "icon.svg"
+	},
+	"permissions": ["idle", "management", "storage", "tabs"],
+	"background": {
+		"page": "./lib/background.html"
+	},
+	"options_ui": {
+		"page": "./lib/options.html"
+	},
+	"applications": {
+		"gecko": {
+			"id": "{21b1ad73-381b-b441-8692-f6065d838c87}"
+		}
+	}
 }

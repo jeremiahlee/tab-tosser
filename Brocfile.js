@@ -17,17 +17,14 @@ const BroccoliMergeTrees = require("broccoli-merge-trees");
 const funnel = require("broccoli-funnel");
 // const { filterTypescript } = require("broccoli-typescript-compiler");
 
-const nonTypeScriptFiles = funnel(
-    "src",
-    {
-        exclude: ["**/*.ts", "**/*.js.map"],
-        annotation: "Non-TypeScript assets"
-    }
-);
+const nonTypeScriptFiles = funnel("src", {
+	exclude: ["**/*.ts", "**/*.js.map"],
+	annotation: "Non-TypeScript assets"
+});
 
-const license = funnel("./",{
-    files: ["LICENSE.md"],
-    annotation: "License file"
+const license = funnel("./", {
+	files: ["LICENSE.md"],
+	annotation: "License file"
 });
 
 // let compiledTypeScript = filterTypescript("src", {
@@ -61,12 +58,14 @@ const license = funnel("./",{
 //     annotation: "compile TypeScript"
 // });
 
-let tree = BroccoliMergeTrees([nonTypeScriptFiles, license], {annotation: "Final output"});
+let tree = BroccoliMergeTrees([nonTypeScriptFiles, license], { annotation: "Final output" });
 
 if (process.env.BROCCOLI_ENV === "release") {
-    // TODO: Create a zip archive for Mozilla ADO
+	// TODO: Create a zip archive for Mozilla ADO
 }
 
-export default () => { return tree; };
+export default () => {
+	return tree;
+};
 
 // export default () => { return BroccoliMergeTrees([compiledTypeScript, license], {annotation: "Final output"}); };

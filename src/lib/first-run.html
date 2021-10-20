@@ -1,35 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tab Tosser™ for Firefox</title>
-    <link rel="stylesheet" href="./styles.css">
-    <script type="module" src="./slider.js"></script>
-    <script type="module" src="./closed-tabs.js"></script>
-    <script type="module" src="./open-tabs.js"></script>
-    <script type="module" src="./first-run.js"></script>
-</head>
-<body>
-    <header class="text-center text-white p-6 lg:p-12">
-        <img src="../icon.svg" alt="Logo: a circular smiling face with eyes covered by a hat in the shape of a Web browser tab UI" width="200" height="200" />
-        <h1 class="font-hairline my-12 text-5xl">Tab Tosser setup</h1>
-        <p class="mb-6 text-2xl">Automatically close tabs you have ignored for too long.</p>
-        <p class="text-2xl">Free yourself of digital clutter.</p>
-    </header>
-    
-    <section class="container mx-auto p-6 lg:pt-12 lg:pb-24 leading-normal text-center">
-        <p class="font-hairline purple text-2xl mb-6 lg:mb-12">Once enabled, Tab Tosser will start quietly closing<br>tabs you have ignored for more than <select id="ttl"></select>.</p>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Tab Tosser™ for Firefox</title>
+		<link rel="stylesheet" href="./styles.css" />
+		<script type="module" src="./slider.js"></script>
+		<script type="module" src="./closed-tabs.js"></script>
+		<script type="module" src="./open-tabs.js"></script>
+		<script type="module" src="./first-run.js"></script>
+	</head>
+	<body>
+		<header class="text-center text-white p-6 lg:p-12">
+			<img src="../icon.svg" alt="Logo: a circular smiling face with eyes covered by a hat in the shape of a Web browser tab UI" width="200" height="200" />
+			<h1 class="font-hairline my-12 text-5xl">Tab Tosser setup</h1>
+			<p class="mb-6 text-2xl">Automatically close tabs you have ignored for too long.</p>
+			<p class="text-2xl">Free yourself of digital clutter.</p>
+		</header>
 
-        <p><span id="immediateCloseWarning"><span id="immediateCloseQuantity">0</span> <span id="immediateCloseNoun">tabs</span> will be closed immediately.</span></p>
-        
-        <p class="font-hairline mb-6 lg:mb-12">You can change this setting later in the add-ons manager.</p>
+		<section class="container mx-auto p-6 lg:pt-12 lg:pb-24 leading-normal text-center">
+			<!-- prettier-ignore -->
+			<p class="font-hairline purple text-2xl mb-6 lg:mb-12">Once enabled, Tab Tosser will start quietly closing<br />tabs you have ignored for more than <select id="ttl"></select>.</p>
 
-        <button id="enableButton" class="block border border-solid border-purple rounded py-4 px-6 text-purple tracking-wide hover:bg-purple-lightest my-6 mx-auto"><strong>I understand.</strong> Thanks for helping.</button>
-    </section>
+			<p>
+				<span id="immediateCloseWarning"><span id="immediateCloseQuantity">0</span> <span id="immediateCloseNoun">tabs</span> will be closed immediately.</span>
+			</p>
 
-    <footer class="leading-normal p-6 text-white text-xs text-center">
-        <p class="leading-normal">©2019 <a href="https://www.jeremiahlee.com" class="text-white">Jeremiah Lee</a>. All rights reserved. “Tab Tosser” and the tab hat smiley face are trademarks of Jeremiah Lee.</p>
-    </footer>
-</body>
+			<p class="font-hairline mb-6 lg:mb-12">You can change this setting later in the add-ons manager.</p>
+
+			<button id="enableButton" class="block border border-solid border-purple rounded py-4 px-6 text-purple tracking-wide hover:bg-purple-lightest my-6 mx-auto"><strong>I understand.</strong> Thanks for helping.</button>
+		</section>
+
+		<footer class="leading-normal p-6 text-white text-xs text-center">
+			<p class="leading-normal">©2019 <a href="https://www.jeremiahlee.com" class="text-white">Jeremiah Lee</a>. “Tab Tosser” and the tab hat smiley face are trademarks of Jeremiah Lee.</p>
+		</footer>
+	</body>
 </html>

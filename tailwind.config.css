@@ -19,7 +19,7 @@
 * @import "tailwindcss/components";
 */
 @tailwind components;
- 
+
 /**
 * Here you would add any of your custom component classes; stuff that you'd
 * want loaded *before* the utilities so that the utilities could still
@@ -45,7 +45,7 @@
 * @import "tailwindcss/utilities";
 */
 @tailwind utilities;
- 
+
 /**
 * Here you would add any custom utilities you need that don't come out of the
 * box with Tailwind.
@@ -62,7 +62,7 @@
 */
 
 .purple {
-    color: #50256f;
+	color: #50256f;
 }
 
 /* .hover\:bg-purple:hover {
@@ -70,44 +70,47 @@
 } */
 
 .hover\:bg-white-a50:hover {
-    background-color: rgba(255,255,255,.1);
+	background-color: rgba(255, 255, 255, 0.1);
 }
 
-.setup-1, .setup-2, .setup-3 {
-    background-position: top center;
-    background-repeat: no-repeat;
-    background-size: contain;
+.setup-1,
+.setup-2,
+.setup-3 {
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-size: contain;
 }
 .setup-1 {
-    background-image: url(./assets/setup-1.png);
+	background-image: url(./assets/setup-1.png);
 }
 .setup-1 h1 {
-    margin-bottom: 300px;
+	margin-bottom: 300px;
 }
 .setup-2 {
-    padding-top: 380px;
-    background-image: url(./assets/setup-2.png);
+	padding-top: 380px;
+	background-image: url(./assets/setup-2.png);
 }
 .setup-3 {
-    padding-top: 380px;
-    background-image: url(./assets/setup-3.png);
+	padding-top: 380px;
+	background-image: url(./assets/setup-3.png);
 }
 
+/* prettier-ignore */
 header {
     background: linear-gradient(
         45deg,
-        #613b7d 0%, 
+        #613b7d 0%,
 
-        #613b7d 18%, 
+        #613b7d 18%,
         #694685 18%,
 
         #694685 34%,
-        #72518c 34%, 
+        #72518c 34%,
 
-        #72518c 50%, 
-        #7b5b93 50%, 
+        #72518c 50%,
+        #7b5b93 50%,
 
-        #7b5b93 66%, 
+        #7b5b93 66%,
         #84669a 66%,
 
         #84669a 82%,
@@ -117,21 +120,22 @@ header {
     );
 }
 
+/* prettier-ignore */
 footer {
     background: linear-gradient(
         -225deg,
-        #2d799f 0%, 
+        #2d799f 0%,
 
-        #2d799f 18%, 
+        #2d799f 18%,
         #3780a4 18%,
 
         #3780a4 34%,
-        #4286a9 34%, 
+        #4286a9 34%,
 
-        #4286a9 50%, 
-        #4c8dad 50%, 
+        #4286a9 50%,
+        #4c8dad 50%,
 
-        #4c8dad 66%, 
+        #4c8dad 66%,
         #5794b2 66%,
 
         #5794b2 82%,
