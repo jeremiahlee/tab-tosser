@@ -1,6 +1,6 @@
 {
 	"name": "tab-tosser",
-	"version": "2.0.0",
+	"version": "3.0.0",
 	"description": "Automatically close tabs that have been ignored for too long. Free yourself of digital clutter.",
 	"directories": {
 		"lib": "lib",
@@ -9,8 +9,7 @@
 	"scripts": {
 		"test": "npm run build && node -r esm node_modules/qunit/bin/qunit",
 		"dev": "tsc -p tsconfig.dev.json && broccoli build",
-		"dev:css": "./node_modules/.bin/tailwind build tailwind.config.css -c tailwind.config.js -o lib/styles.css",
-		"build:css": "./node_modules/.bin/postcss tailwind.config.css -o lib/styles.css",
+		"build:css": "NODE_ENV=production npx tailwindcss -i ./tailwind.css -o ./src/lib/styles.css --minify",
 		"build": "tsc -p tsconfig.release.json && broccoli build",
 		"release": "BROCCOLI_ENV=release npm run build"
 	},
@@ -28,7 +27,7 @@
 	"devDependencies": {
 		"@fullhuman/postcss-purgecss": "^1.2.0",
 		"@types/firefox-webext-browser": "^67.0.1",
-		"autoprefixer": "^9.5.1",
+		"autoprefixer": "^10.3.7",
 		"broccoli": "^3.0.0",
 		"broccoli-cli": "^1.0.0",
 		"broccoli-funnel": "^2.0.2",
@@ -40,7 +39,7 @@
 		"postcss-cli": "^6.1.2",
 		"prettier": "^2.4.1",
 		"qunit": "^2.9.2",
-		"tailwindcss": "^0.7.3",
+		"tailwindcss": "^2.2.17",
 		"ts-node": "^8.1.1",
 		"typescript": "^3.4.5",
 		"webextensions-api-fake": "^0.8.0"

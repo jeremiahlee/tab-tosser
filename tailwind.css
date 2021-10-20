@@ -1,0 +1,54 @@
+/* ./src/tailwind.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* prettier-ignore */
+header {
+    background: linear-gradient(
+        45deg,
+        #613b7d 0%,
+
+        #613b7d 18%,
+        #694685 18%,
+
+        #694685 34%,
+        #72518c 34%,
+
+        #72518c 50%,
+        #7b5b93 50%,
+
+        #7b5b93 66%,
+        #84669a 66%,
+
+        #84669a 82%,
+        #8d71a1 82%,
+
+        #8d71a1 100%
+    );
+}
+
+/* prettier-ignore */
+footer {
+    background: linear-gradient(
+        -225deg,
+        #2d799f 0%,
+
+        #2d799f 18%,
+        #3780a4 18%,
+
+        #3780a4 34%,
+        #4286a9 34%,
+
+        #4286a9 50%,
+        #4c8dad 50%,
+
+        #4c8dad 66%,
+        #5794b2 66%,
+
+        #5794b2 82%,
+        #619bb7 82%,
+
+        #619bb7 100%
+    );
+}
