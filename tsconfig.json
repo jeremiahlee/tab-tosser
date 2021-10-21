@@ -1,9 +1,12 @@
 {
 	"compilerOptions": {
+		"outDir": "./dist/lib/",
 		"sourceMap": true,
+		"moduleResolution": "node",
 		"strictNullChecks": true,
 		"module": "es2015",
 		"target": "es2018",
-		"allowJs": false
-	}
+		"allowJs": true
+	},
+	"include": ["src/lib/*.ts"]
 }
