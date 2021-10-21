@@ -2,9 +2,9 @@ import { countClosedTabs } from "./stats.js";
 import { TabArchive } from "./TabArchiveType.js";
 
 async function getClosedTabs(): Promise<TabArchive[]> {
-	const { closedTabs }: { closedTabs: TabArchive[] } = await browser.storage.local.get({ closedTabs: [] });
+	const { closedTabs }: { closedTabs?: TabArchive[] } = await browser.storage.local.get({ closedTabs: [] });
 
-	return closedTabs;
+	return closedTabs as TabArchive[];
 }
 
 async function archiveTabs(tabsArchive: TabArchive[]): Promise<void> {

@@ -31,7 +31,7 @@ async function getTtl() {
 }
 
 async function getLastCheck(): Promise<Date> {
-	const { lastCheck }: { lastCheck: Date | string } = await browser.storage.local.get({ lastCheck: new Date() });
+	const { lastCheck }: { lastCheck?: Date | string } = await browser.storage.local.get({ lastCheck: new Date() });
 
 	if (lastCheck instanceof Date) {
 		return lastCheck;

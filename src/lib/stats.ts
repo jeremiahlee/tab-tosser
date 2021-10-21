@@ -12,7 +12,7 @@ async function totalTabsClosedCount(): Promise<number> {
 }
 
 async function totalTabsClosedCountSince(): Promise<Date> {
-	const { initDate }: { initDate: Date | string } = await browser.storage.local.get({ initDate: new Date() });
+	const { initDate }: { initDate?: Date | string } = await browser.storage.local.get({ initDate: new Date() });
 
 	if (initDate instanceof Date) {
 		return initDate;
