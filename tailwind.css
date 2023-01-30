@@ -1,7 +1,4 @@
-/* ./src/tailwind.css */
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* prettier-ignore */
 header {
@@ -52,3 +49,7 @@ footer {
         #619bb7 100%
     );
 }
+
+/* Custom base styles must come before components and utilities to avoid specificity issues */
+@tailwind components;
+@tailwind utilities;

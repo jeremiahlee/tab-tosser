@@ -8,18 +8,21 @@ async function ttlChange() {
 }
 
 function populateSlider() {
-	const select = document.getElementById("ttl")!;
+	const select = document.getElementById("ttl") as HTMLSelectElement;
 
+	// Add options to select
+	// Set the initial selected option to 3 days
+	// Both defaultSelected and selected Option parameters must be true for option to be selected
 	for (const sliderMark of sliderMarks) {
-		select.appendChild(new Option(sliderMark[1], `${sliderMark[0]}`));
+		select.add(
+			new Option(
+				sliderMark[1],
+				`${sliderMark[0]}`,
+				(sliderMark[0] === 3),
+				(sliderMark[0] === 3)
+			)
+		);
 	}
-}
-
-// TODO: Determine a smart default based on the open tabs
-async function setSmartDefaultForSlider() {
-	const select = document.getElementById("ttl");
-	(select as HTMLSelectElement).value = "30";
-	await ttlChange();
 }
 
 async function populateTabsToTossWarning() {
@@ -54,5 +57,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 	document.getElementById("ttl")!.addEventListener("change", ttlChange);
 	document.getElementById("enableButton")!.addEventListener("click", enableTap, { once: true });
 	populateSlider();
-	setSmartDefaultForSlider();
+	await ttlChange();
 });

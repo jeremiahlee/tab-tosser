@@ -1,6 +1,6 @@
 // Fake the browser
 import browserFake from "webextensions-api-fake";
-global.browser = browserFake();
+global.browser = browserFake.default();
 
 import {
 	countClosedTabs, //

@@ -22,61 +22,6 @@ async function findExpiredTabs(): Promise<browser.tabs.Tab[]> {
 	return expiredTabs;
 }
 
-// Not used yet. To be used for smart default on first run.
-// async function findExpiredTabsByLevel() {
-//     // Get all non-pinned tabs
-//     const tabs = await browser.tabs.query({
-//         pinned: false
-//     });
-
-//     // Sort tabs ascending by lastAccessed
-//     tabs.sort((a, b) => {
-//         if (a.lastAccessed < b.lastAccessed) {
-//             return -1;
-//         } else if (a.lastAccessed > b.lastAccessed) {
-//             return 1;
-//         } else {
-//             return 0;
-//         }
-//     });
-
-//     // Get the expiration date for each slider mark
-//     const now = new Date();
-//     const expirationDates = [];
-
-//     for (const sliderMark of sliderMarks) {
-//         expirationDates.push(now.valueOf() - (sliderMark * 86400000));
-//     }
-
-//     // Determine how many tabs would be removed with each TTL
-//     const expiredTabsByLevel = [];
-//     let numberOfTabsAffected = 0;
-
-//     let expirationDate = expirationDates.shift();
-
-//     dateLoop:
-//     for (const tab of tabs) {
-//         let evaluated = false;
-
-//         while (evaluated === false) {
-//             if (tab.lastAccessed < expirationDate) {
-//                 numberOfTabsAffected++;
-//                 evaluated = true;
-//             } else {
-//                 expiredTabsByLevel.push(numberOfTabsAffected);
-
-//                 expirationDate = expirationDates.shift();
-
-//                 if (typeof expirationDate === "undefined") {
-//                     break dateLoop;
-//                 }
-//             }
-//         }
-//     }
-
-//     return expiredTabsByLevel;
-// }
-
 async function removeTabs(expiredTabs: browser.tabs.Tab[]): Promise<void> {
 	if (expiredTabs.length === 0) {
 		return;

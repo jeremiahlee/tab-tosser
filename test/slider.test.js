@@ -11,11 +11,3 @@ QUnit.test("slider: week", function (assert) {
 QUnit.test("slider: weeks", function (assert) {
 	assert.equal(getLabelForValue(14), "2 weeks");
 });
-
-QUnit.test("slider: month", function (assert) {
-	assert.equal(getLabelForValue(30), "1 month");
-});
-
-QUnit.test("slider: months", function (assert) {
-	assert.equal(getLabelForValue(60), "2 months");
-});

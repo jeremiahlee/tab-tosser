@@ -1,11 +1,11 @@
 {
 	"compilerOptions": {
 		"outDir": "./dist/lib/",
-		"sourceMap": true,
+		"sourceMap": false,
 		"moduleResolution": "node",
 		"strictNullChecks": true,
-		"module": "es2015",
-		"target": "es2018",
+		"module": "es2020",
+		"target": "es2021",
 		"allowJs": true
 	},
 	"include": ["src/lib/*.ts"]

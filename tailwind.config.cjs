@@ -1,9 +1,7 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-	mode: "jit",
-	purge: ["./src/lib/*.html", "./src/lib/*.js"],
-	darkMode: false, // or 'media' or 'class'
+	content: ["src/lib/**/*.{html,js}"],
 	theme: {
 		colors: {
 			purple: "#50256f",

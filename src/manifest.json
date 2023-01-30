@@ -1,5 +1,5 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "Tab Tosser",
 	"author": "Jeremiah Lee",
 	"developer": {
@@ -12,16 +12,17 @@
 	"icons": {
 		"500": "icon.svg"
 	},
-	"permissions": ["idle", "management", "storage", "tabs"],
+	"permissions": ["idle", "storage", "tabs"],
 	"background": {
 		"page": "./lib/background.html"
 	},
 	"options_ui": {
 		"page": "./lib/options.html"
 	},
-	"applications": {
+	"browser_specific_settings": {
 		"gecko": {
-			"id": "{21b1ad73-381b-b441-8692-f6065d838c87}"
+			"id": "{21b1ad73-381b-b441-8692-f6065d838c87}",
+			"strict_min_version": "109.0"
 		}
 	}
 }
