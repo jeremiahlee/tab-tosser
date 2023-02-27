@@ -58,9 +58,9 @@ async function removeTabs(expiredTabs: browser.tabs.Tab[]): Promise<void> {
             ];
 		});
 
-	// Remove and archive
-	await browser.tabs.remove(expiredTabIds);
+	// Archive and close tabs
 	await archiveTabs(expiredTabLogs);
+	await browser.tabs.remove(expiredTabIds);
 }
 
 async function removeExpiredTabs(): Promise<void> {

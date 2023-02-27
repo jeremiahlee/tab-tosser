@@ -79,6 +79,19 @@ async function clearHistoryHandler(event: MouseEvent): Promise<void> {
 	}
 }
 
+async function openHistoryHandler(event: MouseEvent): Promise<void> {
+	event.preventDefault();
+
+	const tossedTabs = await getClosedTabs();
+	tossedTabs.reverse();
+
+	for (const tossedTab of tossedTabs) {
+		await browser.tabs.create({
+			url: tossedTab[0]
+		});
+	}
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
 	populateSlider();
 	restoreOptions();
@@ -88,4 +101,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 	document.getElementById("ttl")!.addEventListener("change", saveOptions);
 	document.getElementById("resumeLink")!.addEventListener("click", resumeHandler);
 	document.getElementById("clearHistoryLink")!.addEventListener("click", clearHistoryHandler);
+	document.getElementById("openHistoryLink")!.addEventListener("click", openHistoryHandler);
 });

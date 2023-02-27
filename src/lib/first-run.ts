@@ -7,7 +7,7 @@ async function ttlChange() {
 	await populateTabsToTossWarning();
 }
 
-function populateSlider() {
+async function populateSlider() {
 	const select = document.getElementById("ttl") as HTMLSelectElement;
 
 	// Add options to select
@@ -22,6 +22,13 @@ function populateSlider() {
 				(sliderMark[0] === 3)
 			)
 		);
+	}
+
+	// Select existing value if already set
+	const options = await browser.storage.local.get(["ttl"]);
+
+	if (typeof options.ttl !== "undefined") {
+		select.value = options.ttl;
 	}
 }
 
@@ -56,6 +63,6 @@ async function enableTap() {
 document.addEventListener("DOMContentLoaded", async () => {
 	document.getElementById("ttl")!.addEventListener("change", ttlChange);
 	document.getElementById("enableButton")!.addEventListener("click", enableTap, { once: true });
-	populateSlider();
+	await populateSlider();
 	await ttlChange();
 });
