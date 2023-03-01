@@ -92,6 +92,14 @@ async function openHistoryHandler(event: MouseEvent): Promise<void> {
 	}
 }
 
+async function openLogsHandler(event: MouseEvent): Promise<void> {
+	event.preventDefault();
+
+	await browser.tabs.create({
+		url: "logs.html"
+	});
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
 	populateSlider();
 	restoreOptions();
@@ -102,4 +110,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 	document.getElementById("resumeLink")!.addEventListener("click", resumeHandler);
 	document.getElementById("clearHistoryLink")!.addEventListener("click", clearHistoryHandler);
 	document.getElementById("openHistoryLink")!.addEventListener("click", openHistoryHandler);
+	document.getElementById("openLogsLink")!.addEventListener("click", openLogsHandler);
 });

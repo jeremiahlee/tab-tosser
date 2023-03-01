@@ -1,6 +1,6 @@
 {
 	"name": "tab-tosser",
-	"version": "3.1.0",
+	"version": "3.2.0",
 	"description": "Automatically close tabs that have been ignored for too long. Free yourself of digital clutter.",
 	"directories": {
 		"lib": "lib",
@@ -9,7 +9,7 @@
 	"scripts": {
 		"test": "qunit",
 		"build:css": "npx tailwindcss --minify -i ./tailwind.css -o ./src/lib/styles.css --config tailwind.config.cjs",
-		"build:cp": "rm -rf dist/* && cp LICENSE.txt dist/ && cp src/{manifest.json,icon.svg} dist/ && mkdir dist/lib && cp src/lib/{background.html,first-run.html,options.html,styles.css} dist/lib/",
+		"build:cp": "rm -rf dist/* && cp LICENSE.txt dist/ && cp src/{manifest.json,icon.svg} dist/ && mkdir dist/lib && cp src/lib/{background.html,first-run.html,logs.html,options.html,styles.css} dist/lib/ && mkdir dist/vendor && cp src/vendor/* dist/vendor",
 		"build:ts": "npx tsc",
 		"build": "npm run build:css && npm run build:cp && npm run build:ts",
 		"release": "npm run build && web-ext build --overwrite-dest --verbose"
