@@ -10,12 +10,12 @@
 	</head>
 	<body>
 		<form>
-			<p id="paused" style="display: none"><strong>Tab Tosser is currently paused.</strong> <a id="resumeLink" href="#resume">Resume</a></p>
-
 			<div>
-				<label for="ttl">Close tabs not opened within the last </label>
+				<label for="ttl">Close tabs </label>
 				<select id="ttl"></select>
 			</div>
+
+			<p id="paused" style="display: none">Tab Tosser will check for ignored tabs <span id="nextRun">when your device is idle</span>. <a id="resumeLink" href="#resume">Check sooner</a></p>
 
 			<p>Tab Tosser has helped you rid of <span id="totalTabsClosedCount">0</span> tabs since <span id="initDate">2019-01-15</span>.</p>
 
@@ -26,7 +26,7 @@
 				<p><a id="openHistoryLink" href="#openArchivedTabs">Reopen all tossed tabs</a></p>
 			</div>
 
-			<p><a id="openLogsLink" href="#logs">Logs</a></p>
+			<p><a id="openSupportLink" href="#support">Support information</a></p>
 		</form>
 	</body>
 </html>

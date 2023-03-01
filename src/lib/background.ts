@@ -1,17 +1,20 @@
-import { backFromHiatus, isEnabled, isPaused, isTimeToResume, pause, resume } from "./config.js";
+import { isBackFromHiatus, isPaused, isTimeToResume, pause, resume } from "./config.js";
 import { findExpiredTabs, removeExpiredTabs } from "./open-tabs.js";
+import { log } from "./utils.js";
 
 // On first run, show the explainer/initial settings page
-browser.runtime.onInstalled.addListener((info) => {
+browser.runtime.onInstalled.addListener(async (info) => {
 	browser.tabs.create({
 		active: true,
 		url: "/lib/first-run.html"
 	});
+
+	await log(`Version ${browser.runtime.getManifest().version} installed`);
 });
 
 // Run in the background when the browser is chillin’
 browser.idle.onStateChanged.addListener(async (state) => {
-	if (state === "idle" && (await isEnabled()) === true) {
+	if (state === "idle") {
 		// Check if vacation mode is activated
 		// If so, check if now is time to deactive vacation mode
 
@@ -29,11 +32,11 @@ browser.idle.onStateChanged.addListener(async (state) => {
 		}
 
 		// If vacation detected and there are tabs that will be closed,
-		// don't close anything for 1 week
+		// don't close anything for an additional ttl
 		// (findExpiredTabs updates lastCheck, causing backFromHiatus to return false on next run)
 		// Otherwise, do the normal expired tab cleanup
 
-		const backFromHiatusStatus = await backFromHiatus();
+		const backFromHiatusStatus = await isBackFromHiatus();
 		const expiredTabs = await findExpiredTabs();
 
 		if (backFromHiatusStatus === true && expiredTabs.length > 0) {

@@ -3,7 +3,7 @@ import browserFake from "webextensions-api-fake";
 global.browser = browserFake.default();
 
 import {
-	countClosedTabs, //
+	countClosedTabs,
 	totalTabsClosedCount,
 	totalTabsClosedCountSince
 } from "../dist/lib/stats.js";

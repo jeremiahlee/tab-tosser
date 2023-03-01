@@ -1,68 +1,37 @@
-import { enable, setTtl } from "./config.js";
-import { findExpiredTabs, removeExpiredTabs } from "./open-tabs.js";
+import { setTtl } from "./config.js";
 import { sliderMarks } from "./slider.js";
 
 async function ttlChange() {
-	await setTtl(Number((document.getElementById("ttl") as HTMLSelectElement).value));
-	await populateTabsToTossWarning();
+	await setTtl(Number((document.getElementById("settings") as HTMLFormElement).elements["ttl"].value));
 }
 
 async function populateSlider() {
-	const select = document.getElementById("ttl") as HTMLSelectElement;
+	// Determine pre-selected value
+	let preselectedValue = 0;
 
-	// Add options to select
-	// Set the initial selected option to 3 days
-	// Both defaultSelected and selected Option parameters must be true for option to be selected
+	// If user upgrading, check if existing value already set
+	// Confirm previous ttl value is still among available options
+	const { ttl } = await browser.storage.local.get(["ttl"]);
+	if (typeof ttl !== "undefined") {
+		const validValues = sliderMarks.map((option) => option[0]);
+		if (validValues.includes(ttl)) {
+			preselectedValue = ttl;
+		}
+	}
+
+	// Add radio buttons to form
+	// Set the initial selected option to manually
+	let radioButtons = "";
 	for (const sliderMark of sliderMarks) {
-		select.add(
-			new Option(
-				sliderMark[1],
-				`${sliderMark[0]}`,
-				(sliderMark[0] === 3),
-				(sliderMark[0] === 3)
-			)
-		);
+		radioButtons += `<div class="flex items-center"><input type="radio" id="option-${sliderMark[0]}" name="ttl" value="${sliderMark[0]}" class="h-4 w-4 border-gray-300 text-purple focus:ring-purple" ${(sliderMark[0] === preselectedValue)? "checked" : ""}><label for="option-${sliderMark[0]}" class="ml-3 block text-base font-normal text-gray-700">${sliderMark[1]}</label></div>`;
 	}
 
-	// Select existing value if already set
-	const options = await browser.storage.local.get(["ttl"]);
-
-	if (typeof options.ttl !== "undefined") {
-		select.value = options.ttl;
-	}
-}
-
-async function populateTabsToTossWarning() {
-	const tossedTabsCount = document.getElementById("immediateCloseQuantity");
-	const tossedTabsLabel = document.getElementById("immediateCloseNoun");
-
-	const tossedTabs = await findExpiredTabs();
-
-	tossedTabsCount!.innerText = "" + tossedTabs.length;
-
-	if (tossedTabs.length === 0 || tossedTabs.length > 1) {
-		tossedTabsLabel!.innerText = "tabs";
-	}
-}
-
-// On enable button tap, save the ttl and close the tab
-async function enableTap() {
-	await removeExpiredTabs();
-	await enable();
-
-	// Open options page
-	await browser.runtime.openOptionsPage();
-
-	// Close self
-	const thisBrowserTab = await browser.tabs.getCurrent();
-	if (typeof thisBrowserTab !== "undefined" && typeof thisBrowserTab.id !== "undefined") {
-		browser.tabs.remove(thisBrowserTab.id);
-	}
+	const form = document.getElementById("ttlOptions") as HTMLDivElement;
+	form.innerHTML = radioButtons;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-	document.getElementById("ttl")!.addEventListener("change", ttlChange);
-	document.getElementById("enableButton")!.addEventListener("click", enableTap, { once: true });
+	document.getElementById("settings")!.addEventListener("change", ttlChange);
 	await populateSlider();
 	await ttlChange();
 });

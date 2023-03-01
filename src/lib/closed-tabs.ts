@@ -30,11 +30,6 @@ function purgeArchivedTabs(tabs: TabArchive[]): TabArchive[] {
 
 	const filteredTabs: TabArchive[] = tabs.filter((tab) => tab[3] > now);
 
-	// Only keep last 1,000 tabs
-	if (filteredTabs.length > 1000) {
-		filteredTabs.splice(0, filteredTabs.length - 1000);
-	}
-
 	return filteredTabs;
 }
 
@@ -52,7 +47,7 @@ async function save(tabsArchive): Promise<void> {
 }
 
 export {
-	clearArchivedTabsHistory, //
+	clearArchivedTabsHistory,
 	getClosedTabs,
 	archiveTabs
 };

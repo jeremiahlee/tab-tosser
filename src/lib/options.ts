@@ -1,12 +1,10 @@
 import { clearArchivedTabsHistory, getClosedTabs } from "./closed-tabs.js";
-import { isPaused, resume } from "./config.js";
+import { getNextRun, isPaused, resume, setTtl } from "./config.js";
 import { sliderMarks } from "./slider.js";
 import { totalTabsClosedCount, totalTabsClosedCountSince } from "./stats.js";
 
-function saveOptions(): void {
-	browser.storage.local.set({
-		ttl: Number((document.querySelector("#ttl") as HTMLSelectElement).value)
-	});
+async function saveOptions(): Promise<void> {
+	await setTtl(Number((document.querySelector("#ttl") as HTMLSelectElement).value));
 }
 
 async function restoreOptions(): Promise<void> {
@@ -51,13 +49,18 @@ async function populateStats(): Promise<void> {
 
 	(document.getElementById("totalTabsClosedCount") as HTMLSpanElement).innerText = `${tabsClosedCount}`;
 
-	const dateString = new Date(await totalTabsClosedCountSince()).toISOString().substring(0, 10);
+	const dateString = new Intl.DateTimeFormat("default", {
+		year: "numeric",
+		month: "numeric",
+		day: "numeric"
+	}).format(new Date(await totalTabsClosedCountSince()));
 
 	(document.getElementById("initDate") as HTMLSpanElement).innerText = dateString;
 }
 
 async function handlePausedState(): Promise<void> {
 	if ((await isPaused()) === true) {
+		document.getElementById("nextRun")!.innerHTML = `after ${await getNextRun()}`;
 		document.getElementById("paused")!.style.display = "block";
 	}
 }
@@ -92,11 +95,11 @@ async function openHistoryHandler(event: MouseEvent): Promise<void> {
 	}
 }
 
-async function openLogsHandler(event: MouseEvent): Promise<void> {
+async function openSupportHandler(event: MouseEvent): Promise<void> {
 	event.preventDefault();
 
 	await browser.tabs.create({
-		url: "logs.html"
+		url: "support.html"
 	});
 }
 
@@ -110,5 +113,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 	document.getElementById("resumeLink")!.addEventListener("click", resumeHandler);
 	document.getElementById("clearHistoryLink")!.addEventListener("click", clearHistoryHandler);
 	document.getElementById("openHistoryLink")!.addEventListener("click", openHistoryHandler);
-	document.getElementById("openLogsLink")!.addEventListener("click", openLogsHandler);
+	document.getElementById("openSupportLink")!.addEventListener("click", openSupportHandler);
 });

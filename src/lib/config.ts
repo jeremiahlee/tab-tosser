@@ -1,23 +1,10 @@
-function enable(): Promise<void> {
-	return browser.storage.local.set({
-		enabled: true,
-		initDate: new Date()
-	});
-}
+import { log } from "./utils.js";
 
-function disable(): Promise<void> {
-	return browser.storage.local.set({
-		enabled: false
-	});
-}
+async function setTtl(newTtl: number): Promise<void> {
+	await browser.storage.local.set({ ttl: newTtl });
+	await pause();
 
-async function isEnabled(): Promise<boolean> {
-	const { enabled } = await browser.storage.local.get({ enabled: false });
-	return enabled;
-}
-
-function setTtl(newTtl: number): Promise<void> {
-	return browser.storage.local.set({ ttl: newTtl });
+	await log(`setTtl: ${newTtl}`);
 }
 
 async function getTtl() {
@@ -52,31 +39,35 @@ async function expirationDate(): Promise<number> {
 
 	const ttl = await getTtl();
 
-	return now.valueOf() - ttl * 24 * 60 * 60 * 1000;
+	if (ttl > 0) {
+		return now.valueOf() - ttl * 24 * 60 * 60 * 1000;
+	} else {
+		return Number.NEGATIVE_INFINITY;
+	}
 }
 
 async function clearFromArchiveDate(): Promise<number> {
 	const lastCheck = await getLastCheck();
-	const ttl = await getTtl();
+	const ttl = 30; // 30 days from last check
 
 	return lastCheck.valueOf() + ttl * 24 * 60 * 60 * 1000;
 }
 
-// Pause Tab Tosser for 1 week
+// Pause Tab Tosser
 async function pause(): Promise<void> {
 	const ttl = await getTtl();
 
-	let pausePeriod: number = 7;
-
-	if (ttl <= 7) {
-		pausePeriod = ttl - 1;
+	if (ttl > 0) {
+		const pauseUntilDate = new Date().valueOf() + ttl * 24 * 60 * 60 * 1000;
+		await browser.storage.local.set({ pauseUntil: pauseUntilDate });
+		await log(`pausedUntil: ${new Date(pauseUntilDate).toISOString()}`);
+	} else {
+		await resume();
 	}
-
-	const pauseUntilDate = new Date().valueOf() + pausePeriod * 24 * 60 * 60 * 1000;
-	await browser.storage.local.set({ pauseUntil: pauseUntilDate });
 }
 async function resume(): Promise<void> {
 	await browser.storage.local.set({ pauseUntil: null });
+	await log(`resumed`);
 }
 async function isPaused(): Promise<boolean> {
 	const storage = await browser.storage.local.get({ pauseUntil: null });
@@ -100,7 +91,7 @@ async function isTimeToResume(): Promise<boolean> {
 		return false;
 	}
 }
-async function backFromHiatus(): Promise<boolean> {
+async function isBackFromHiatus(): Promise<boolean> {
 	const lastCheck = await getLastCheck();
 	const ttl = await getTtl();
 	const now = new Date().valueOf();
@@ -114,15 +105,25 @@ async function backFromHiatus(): Promise<boolean> {
 		return false;
 	}
 }
+async function getNextRun() {
+	const { pauseUntil } = await browser.storage.local.get({ pauseUntil: null });
+
+	return new Intl.DateTimeFormat("default", {
+		year: "numeric",
+		month: "numeric",
+		day: "numeric",
+		hour: "numeric",
+		minute: "numeric",
+		hour12: false,
+	}).format(new Date(pauseUntil));
+}
 
 export {
-	backFromHiatus, //
+	isBackFromHiatus,
 	clearFromArchiveDate,
-	disable,
 	expirationDate,
-	enable,
+	getNextRun,
 	getTtl,
-	isEnabled,
 	isPaused,
 	isTimeToResume,
 	pause,

@@ -35,7 +35,7 @@ To build: `npm run build`
 
 To test: `npm run test`
 
-To distribute: `npm run release`
+To distribute: Bump the version number in package.json and src/manifest.json, then `npm run release`
 
 ## Firefox Add-ons submission
 

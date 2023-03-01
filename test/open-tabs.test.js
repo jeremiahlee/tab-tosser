@@ -3,7 +3,7 @@ import browserFake from "webextensions-api-fake";
 global.browser = browserFake.default();
 
 import {
-	findExpiredTabs, //
+	findExpiredTabs,
 	removeExpiredTabs
 } from "../dist/lib/open-tabs.js";
 
@@ -12,17 +12,16 @@ import { getClosedTabs } from "../dist/lib/closed-tabs.js";
 import { setTtl } from "../dist/lib/config.js";
 
 import {
-	createTab, //
+	createTab,
 	createPinnedTab,
 	createExpiredTab,
 	createExpiredPinnedTab
 } from "./helpers/tab-creator.js";
 
 QUnit.test("open-tabs: findExpiredTabs", async function (assert) {
-	// Set the TTL and then create some tabs to close
+	// Create some tabs to close
 	// 3 expired tabs created, but pinned tabs should not be counted
-	const ttlFake = 3;
-	await setTtl(ttlFake);
+	const ttlFake = 7;
 
 	await createTab();
 	await createTab();
@@ -32,8 +31,16 @@ QUnit.test("open-tabs: findExpiredTabs", async function (assert) {
 	await createExpiredTab(ttlFake);
 	await createExpiredPinnedTab(ttlFake);
 
+	// Verify no tabs closed when in manual mode
+	await setTtl(0);
 	const expiredTabs = await findExpiredTabs();
-	assert.equal(expiredTabs.length, 2);
+	assert.equal(expiredTabs.length, 0);
+
+	// Verify 2 tabs closed in non-manual mode
+	await setTtl(ttlFake);
+
+	const expiredTabs2 = await findExpiredTabs();
+	assert.equal(expiredTabs2.length, 2);
 });
 
 QUnit.test("open-tabs: removeExpiredTabs", async function (assert) {

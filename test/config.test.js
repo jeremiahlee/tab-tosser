@@ -3,29 +3,16 @@ import browserFake from "webextensions-api-fake";
 global.browser = browserFake.default();
 
 import {
-	backFromHiatus, //
+	isBackFromHiatus,
 	clearFromArchiveDate,
-	disable,
 	expirationDate,
-	enable,
 	getTtl,
-	isEnabled,
 	isPaused,
 	isTimeToResume,
 	pause,
 	resume,
 	setTtl
 } from "../dist/lib/config.js";
-
-QUnit.test("config: enable", async function (assert) {
-	await enable();
-	assert.equal(await isEnabled(), true);
-});
-
-QUnit.test("config: disable", async function (assert) {
-	await disable();
-	assert.equal(await isEnabled(), false);
-});
 
 QUnit.test("config: ttl", async function (assert) {
 	await setTtl(30);
@@ -34,7 +21,7 @@ QUnit.test("config: ttl", async function (assert) {
 
 QUnit.test("config: clearFromArchiveDate", async function (assert) {
 	const lastCheckFake = "2019-01-15T00:00:00Z";
-	const ttlFake = 3;
+	const ttlFake = 30; // Hardcoded to 30 days in v3.3
 
 	await browser.storage.local.set({
 		lastCheck: lastCheckFake,
@@ -47,7 +34,8 @@ QUnit.test("config: clearFromArchiveDate", async function (assert) {
 });
 
 QUnit.test("config: expirationDate", async function (assert) {
-	const ttlFake = 3;
+	// Check non-manual ttl
+	const ttlFake = 7;
 	await setTtl(ttlFake);
 
 	const expirationDateMin = new Date().valueOf() - ttlFake * 24 * 60 * 60 * 1000;
@@ -55,23 +43,30 @@ QUnit.test("config: expirationDate", async function (assert) {
 	const expirationDateMax = expirationDateMin + 30 * 1000; // 30 seconds
 
 	assert.ok(expirationDateResult >= expirationDateMin && expirationDateResult <= expirationDateMax);
+
+	// Check manual ttl
+	await setTtl(0);
+	const manualExpirationDateResult = await expirationDate();
+	assert.equal(manualExpirationDateResult, Number.NEGATIVE_INFINITY);
 });
 
 QUnit.test("config: pause", async function (assert) {
-	// The pauseUntil date should be ttl-1 days away if
-	// the ttl is 7 or less days
+	// Verify non-running state
+	await setTtl(0);
+	assert.equal(await isPaused(), false);
 
-	const ttls = [3, 4, 5, 6, 7, 14];
-	const pauseTtls = [2, 3, 4, 5, 6, 7];
+	// Verify running state
+	const ttls = [1, 7 , 30];
 
 	for (let i = 0; i < ttls.length; i++) {
 		const ttl = ttls[i];
-		const pauseTtl = pauseTtls[i];
 
 		await setTtl(ttl);
-		await pause();
+		// settingTtl will pause Tab Tosser
 
-		const expectedPauseDate = new Date(new Date().valueOf() + pauseTtl * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
+		assert.equal(await isPaused(), true);
+
+		const expectedPauseDate = new Date(new Date().valueOf() + ttl * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
 
 		const storage = await browser.storage.local.get({ pauseUntil: 0 });
 		const actualPauseDate = new Date(storage.pauseUntil).toISOString().substring(0, 10);
@@ -85,7 +80,7 @@ QUnit.test("config: resume", async function (assert) {
 	assert.equal(await isPaused(), false);
 });
 
-QUnit.test("config: backFromHiatus true", async function (assert) {
+QUnit.test("config: isBackFromHiatus true", async function (assert) {
 	// Hiatus mode should be triggered because the last check happened
 	// more than 3 days ago.
 
@@ -98,10 +93,10 @@ QUnit.test("config: backFromHiatus true", async function (assert) {
 		ttl: ttlFake
 	});
 
-	assert.equal(await backFromHiatus(), true);
+	assert.equal(await isBackFromHiatus(), true);
 });
 
-QUnit.test("config: backFromHiatus false", async function (assert) {
+QUnit.test("config: isBackFromHiatus false", async function (assert) {
 	// Hiatus mode should be triggered because the last check happened
 	// more recently than 3 days ago.
 
@@ -114,7 +109,7 @@ QUnit.test("config: backFromHiatus false", async function (assert) {
 		ttl: ttlFake
 	});
 
-	assert.equal(await backFromHiatus(), false);
+	assert.equal(await isBackFromHiatus(), false);
 });
 
 QUnit.test("config: isTimeToResume true", async function (assert) {

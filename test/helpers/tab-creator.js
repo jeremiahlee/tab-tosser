@@ -33,7 +33,7 @@ async function createExpiredPinnedTab(ttl) {
 }
 
 export {
-	createTab, //
+	createTab,
 	createPinnedTab,
 	createExpiredTab,
 	createExpiredPinnedTab

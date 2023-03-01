@@ -4,16 +4,15 @@ import browserFake from "webextensions-api-fake";
 global.browser = browserFake.default();
 
 import {
-	clearArchivedTabsHistory, //
+	clearArchivedTabsHistory,
 	getClosedTabs,
 	archiveTabs
 } from "../dist/lib/closed-tabs.js";
 
 QUnit.test("closed-tabs: archiveTabs", async function (assert) {
-	const ttl = 3;
+	const ttl = 30; // Hardcoded to 30 days in v3.3
 	const now = new Date().getTime();
 
-	// prettier-ignore
 	await archiveTabs([
         [
             "https://www.example.com/tab-archive-0",
@@ -30,7 +29,6 @@ QUnit.test("closed-tabs: archiveTabs", async function (assert) {
     ]);
 
 	// archiveTabs twice to ensure the archive is being appended to
-	// prettier-ignore
 	await archiveTabs([
         [
             "https://www.example.com/tab-archive-2",
@@ -51,53 +49,10 @@ QUnit.test("closed-tabs: archiveTabs", async function (assert) {
 	assert.equal(archivedTabs.length, 4);
 });
 
-QUnit.test("closed-tabs: purgeArchivedTabs: only 1000", async function (assert) {
-	const ttl = 3;
-	const now = new Date().getTime();
-
-	const closedTabsFake = [];
-	const closedTabsFakeLastAccessed = now - (ttl + 1) * 24 * 60 * 60 * 1000;
-	const closedTabsFakeArchivePurge = now + ttl * 24 * 60 * 60 * 1000;
-
-	for (let i = 0; i < 1000; i++) {
-		// prettier-ignore
-		closedTabsFake.push([
-			i,
-			`${i}`,
-			closedTabsFakeLastAccessed,
-			closedTabsFakeArchivePurge
-		]);
-	}
-
-	await browser.storage.local.set({ closedTabs: closedTabsFake });
-
-	// prettier-ignore
-	await archiveTabs([
-        [
-            "https://www.example.com/tab-archive-0",
-            "Test tab archive 0",
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
-            now + (ttl * 24 * 60 * 60 * 1000)
-        ],
-        [
-            "https://www.example.com/tab-archive-1",
-            "Test tab archive 1",
-            now - ((ttl + 1) * 24 * 60 * 60 * 1000),
-            now + (ttl * 24 * 60 * 60 * 1000)
-        ]
-    ]);
-
-	const archivedTabs = await getClosedTabs();
-
-	assert.equal(archivedTabs.length, 1000);
-	assert.equal(archivedTabs[0][0], 2);
-});
-
 QUnit.test("closed-tabs: purgeArchivedTabs: purge date", async function (assert) {
 	const ttl = 3;
 	const now = new Date().getTime();
 
-	// prettier-ignore
 	const closedTabsFake = [
         [
             "https://www.example.com/tab-archive-0",
@@ -118,7 +73,6 @@ QUnit.test("closed-tabs: purgeArchivedTabs: purge date", async function (assert)
 	const pretestArchivedTabs = await getClosedTabs();
 	assert.equal(pretestArchivedTabs.length, 2);
 
-	// prettier-ignore
 	await archiveTabs([
         [
             "https://www.example.com/tab-archive-0",
@@ -145,7 +99,6 @@ QUnit.test("closed-tabs: clearArchivedTabsHistory", async function (assert) {
 	const ttl = 3;
 	const now = new Date().getTime();
 
-	// prettier-ignore
 	await archiveTabs([
         [
             "https://www.example.com/tab-archive-0",

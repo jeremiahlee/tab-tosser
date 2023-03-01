@@ -27,7 +27,7 @@ async function totalTabsClosedCountSince(): Promise<Date> {
 }
 
 export {
-	countClosedTabs, //
+	countClosedTabs,
 	totalTabsClosedCount,
 	totalTabsClosedCountSince
 };

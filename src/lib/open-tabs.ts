@@ -1,7 +1,7 @@
 import { archiveTabs } from "./closed-tabs.js";
 import { clearFromArchiveDate, expirationDate } from "./config.js";
 import { TabArchive } from "./TabArchiveType.js";
-import { formatPageTitle } from "./utils.js";
+import { formatPageTitle, log } from "./utils.js";
 
 async function findExpiredTabs(): Promise<browser.tabs.Tab[]> {
 	// Get all non-pinned tabs
@@ -28,10 +28,9 @@ async function removeTabs(expiredTabs: browser.tabs.Tab[]): Promise<void> {
 	}
 
 	// Create array of tab ids to remove
-	// prettier-ignore
 	const expiredTabIds: number[] = expiredTabs
-        .map((tab) => tab.id)
-        .filter((tabId) => typeof tabId !== "undefined") as number[];
+		.map((tab) => tab.id)
+		.filter((tabId) => typeof tabId !== "undefined") as number[];
 	// TypeScript static analysis is unable to track filtering out types
 
 	const clearFromArchiveDateCache: number = await clearFromArchiveDate();
@@ -49,18 +48,19 @@ async function removeTabs(expiredTabs: browser.tabs.Tab[]): Promise<void> {
 				// TypeScript static analysis is unable to track filtering out non-strings above
 			}
 
-			// prettier-ignore
 			return [
-                tab.url as string,
-                formatPageTitle(pageTitle),
-                tab.lastAccessed as number,
-                clearFromArchiveDateCache
-            ];
+				tab.url as string,
+				formatPageTitle(pageTitle),
+				tab.lastAccessed as number,
+				clearFromArchiveDateCache
+			];
 		});
 
 	// Archive and close tabs
 	await archiveTabs(expiredTabLogs);
 	await browser.tabs.remove(expiredTabIds);
+
+	await log(`removeTabs: ${expiredTabLogs.length}`);
 }
 
 async function removeExpiredTabs(): Promise<void> {
@@ -69,6 +69,6 @@ async function removeExpiredTabs(): Promise<void> {
 }
 
 export {
-	findExpiredTabs, //
+	findExpiredTabs,
 	removeExpiredTabs
 };

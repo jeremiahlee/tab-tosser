@@ -16,16 +16,17 @@
 			<h1 class="font-hairline mt-12 text-5xl">Tab Tosser setup</h1>
 		</header>
 
-		<section class="container mx-auto p-6 lg:pt-12 lg:pb-12 leading-normal text-center">
-			<p class="font-hairline text-purple text-2xl mb-6 lg:mb-12">Automatically close tabs you have ignored for more than <select id="ttl"></select>.</p>
+		<form id="settings" class="container mx-auto p-6 lg:pt-12 lg:pb-12 leading-normal text-center">
+			<fieldset class="mb-12 w-max mx-auto">
+				<legend class="text-lg font-semibold leading-6 mb-4">Close tabs</legend>
 
-			<button id="enableButton" class="block border border-solid border-purple rounded-full py-4 px-6 text-purple tracking-wide bg-white hover:bg-purple hover:text-white my-6 lg:my-12 mx-auto"><strong>Enable Tab Tosser</strong></button>
+				<div id="ttlOptions" class="space-y-4"></div>
+			</fieldset>
 
-			<p class="font-hairline mb-6">You can change this setting later and view recently tossed tabs in the extension preferences.</p>
-
-			<p class="mb-6">
-				<span id="immediateCloseWarning"><span id="immediateCloseQuantity">0</span> <span id="immediateCloseNoun">tabs</span> will be closed immediately.</span>
-			</p>
-		</section>
+			<div class="font-hairline max-w-md mx-auto text-gray-600 text-sm">
+				<p class="mb-4">You can change this setting later and view recently tossed tabs in the extension preferences.</p>
+				<p>No tabs will be closed immediately.</p>
+			</div>
+		</form>
 	</body>
 </html>
