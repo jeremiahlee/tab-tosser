@@ -58,9 +58,16 @@ async function pause(): Promise<void> {
 	const ttl = await getTtl();
 
 	if (ttl > 0) {
-		const pauseUntilDate = new Date().valueOf() + ttl * 24 * 60 * 60 * 1000;
-		await browser.storage.local.set({ pauseUntil: pauseUntilDate });
-		await log(`pausedUntil: ${new Date(pauseUntilDate).toISOString()}`);
+		const { pauseUntil: currentPauseUntil } = await browser.storage.local.get({ pauseUntil: null });
+		const newPauseUntilDate = new Date().valueOf() + ttl * 24 * 60 * 60 * 1000;
+
+		// If already paused, do not extend pause period
+		if (currentPauseUntil && (newPauseUntilDate > currentPauseUntil)) {
+			return;
+		} else {
+			await browser.storage.local.set({ pauseUntil: newPauseUntilDate });
+			await log(`pausedUntil: ${new Date(newPauseUntilDate).toISOString()}`);
+		}
 	} else {
 		await resume();
 	}
