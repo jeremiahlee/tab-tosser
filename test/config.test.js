@@ -3,34 +3,50 @@ import browserFake from "webextensions-api-fake";
 global.browser = browserFake.default();
 
 import {
-	isBackFromHiatus,
 	clearFromArchiveDate,
 	expirationDate,
 	getTtl,
 	isPaused,
-	isTimeToResume,
+	isTimeToCheckTabs,
 	pause,
 	resume,
+	setLastCheck,
 	setTtl
 } from "../dist/lib/config.js";
 
+import { sliderMarkTtls } from "../dist/lib/slider.js";
+
 QUnit.test("config: ttl", async function (assert) {
-	await setTtl(30);
-	assert.equal(await getTtl(), 30);
+	// valid option must be saved
+	await setTtl(sliderMarkTtls[1]);
+	assert.equal(await getTtl(), sliderMarkTtls[1]);
+
+	// must be paused when enabled
+	assert.equal(await isPaused(), true);
+
+	// invalid option must throw error on set
+	assert.rejects(setTtl(999));
+
+	// invalid option must fail to disabled state (0 TTL) on get
+	await browser.storage.local.set({ttl: 999});
+	assert.equal(await getTtl(), 0);
+
+	// must not be paused when disabled (0)
+	await setTtl(sliderMarkTtls[1]);
+	await setTtl(0);
+	assert.equal(await isPaused(), false);
 });
 
 QUnit.test("config: clearFromArchiveDate", async function (assert) {
-	const lastCheckFake = "2019-01-15T00:00:00Z";
-	const ttlFake = 30; // Hardcoded to 30 days in v3.3
+	const lastCheckFake = new Date();
+	const ttlFake = 30; // TODO: future configuration
 
-	await browser.storage.local.set({
-		lastCheck: lastCheckFake,
-		ttl: ttlFake
-	});
+	const expectedArchiveDate = lastCheckFake.valueOf() + ttlFake * 24 * 60 * 60 * 1000;
 
-	const expectedArchiveDate = new Date(lastCheckFake).valueOf() + ttlFake * 24 * 60 * 60 * 1000;
+	const difference = expectedArchiveDate - await clearFromArchiveDate(lastCheckFake);
 
-	assert.equal(await clearFromArchiveDate(), expectedArchiveDate);
+	// Difference should be less than 1 second
+	assert.equal(Math.abs(difference) < 1000, true);
 });
 
 QUnit.test("config: expirationDate", async function (assert) {
@@ -51,28 +67,23 @@ QUnit.test("config: expirationDate", async function (assert) {
 });
 
 QUnit.test("config: pause", async function (assert) {
-	// Verify non-running state
-	await setTtl(0);
+	// 0 pause days results in being enabled
+	await pause(0);
 	assert.equal(await isPaused(), false);
 
-	// Verify running state
-	const ttls = [1, 7 , 30];
+	// resume date must be now + days into the future
+	await pause(sliderMarkTtls[2]);
+	const expectedPauseDate = new Date(new Date().valueOf() + sliderMarkTtls[2] * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
+	const storage = await browser.storage.local.get({ pauseUntil: 0 });
+	const actualPauseDate = new Date(storage.pauseUntil).toISOString().substring(0, 10);
+	assert.equal(actualPauseDate, expectedPauseDate);
 
-	for (let i = 0; i < ttls.length; i++) {
-		const ttl = ttls[i];
-
-		await setTtl(ttl);
-		// settingTtl will pause Tab Tosser
-
-		assert.equal(await isPaused(), true);
-
-		const expectedPauseDate = new Date(new Date().valueOf() + ttl * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
-
-		const storage = await browser.storage.local.get({ pauseUntil: 0 });
-		const actualPauseDate = new Date(storage.pauseUntil).toISOString().substring(0, 10);
-
-		assert.equal(actualPauseDate, expectedPauseDate);
-	}
+	// excessive days into future must be capped to 31 days
+	await pause(32);
+	const expectedPauseDate2 = new Date(new Date().valueOf() + 31 * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
+	const storage2 = await browser.storage.local.get({ pauseUntil: 0 });
+	const actualPauseDate2 = new Date(storage2.pauseUntil).toISOString().substring(0, 10);
+	assert.equal(actualPauseDate2, expectedPauseDate2);
 });
 
 QUnit.test("config: resume", async function (assert) {
@@ -80,54 +91,25 @@ QUnit.test("config: resume", async function (assert) {
 	assert.equal(await isPaused(), false);
 });
 
-QUnit.test("config: isBackFromHiatus true", async function (assert) {
-	// Hiatus mode should be triggered because the last check happened
-	// more than 3 days ago.
+QUnit.test("config: isTimeToCheckTabs", async function (assert) {
+	// must be false when ttl = 0 (disabled)
+	await setTtl(0);
+	assert.equal(await isTimeToCheckTabs(), false);
 
-	const now = new Date().valueOf();
-	const ttlFake = 3;
-	const lastCheckFake = new Date(now - (ttlFake + 1) * 24 * 60 * 60 * 1000).toISOString(); // 1 day beyond the TTL
+	// must be false if first run in 3+ days
+	await setTtl(sliderMarkTtls[1]);
+	await setLastCheck(new Date(new Date().getTime() - (4 * 24 * 60 * 60 * 1000)));
+	assert.equal(await isTimeToCheckTabs(), false);
+	assert.equal(await isPaused(), true);
 
-	await browser.storage.local.set({
-		lastCheck: lastCheckFake,
-		ttl: ttlFake
-	});
+	// must be false if paused and resume date is in the future
+	assert.equal(await isTimeToCheckTabs(), false);
 
-	assert.equal(await isBackFromHiatus(), true);
-});
+	// must be true if paused and resume date is in the past
+	await browser.storage.local.set({ pauseUntil: new Date().getTime() - 2 * 24 * 60 * 60 * 1000 });
+	assert.equal(await isTimeToCheckTabs(), true);
+	assert.equal(await isPaused(), false);
 
-QUnit.test("config: isBackFromHiatus false", async function (assert) {
-	// Hiatus mode should be triggered because the last check happened
-	// more recently than 3 days ago.
-
-	const now = new Date().valueOf();
-	const ttlFake = 3;
-	const lastCheckFake = new Date(now - (ttlFake - 1) * 24 * 60 * 60 * 1000).toISOString(); // 1 day less than the TTL
-
-	await browser.storage.local.set({
-		lastCheck: lastCheckFake,
-		ttl: ttlFake
-	});
-
-	assert.equal(await isBackFromHiatus(), false);
-});
-
-QUnit.test("config: isTimeToResume true", async function (assert) {
-	const dateInPast = new Date().valueOf() - 60 * 1000;
-
-	await browser.storage.local.set({
-		pauseUntil: dateInPast
-	});
-
-	assert.equal(await isTimeToResume(), true);
-});
-
-QUnit.test("config: isTimeToResume false", async function (assert) {
-	const dateInFuture = new Date().valueOf() + 60 * 1000;
-
-	await browser.storage.local.set({
-		pauseUntil: dateInFuture
-	});
-
-	assert.equal(await isTimeToResume(), false);
+	// must be true if enabled, user has not been away for too long, and not paused
+	assert.equal(await isTimeToCheckTabs(), true);
 });

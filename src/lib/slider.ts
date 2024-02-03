@@ -5,6 +5,9 @@ const sliderMarks: Array<[number, string]> = [
 	[31, "after 1 month"]
 ];
 
+const sliderMarkTtls: Array<number> = sliderMarks.map((option) => option[0]);
+
 export {
+	sliderMarkTtls,
 	sliderMarks
 };

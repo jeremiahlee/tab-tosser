@@ -33,7 +33,7 @@ async function removeTabs(expiredTabs: browser.tabs.Tab[]): Promise<void> {
 		.filter((tabId) => typeof tabId !== "undefined") as number[];
 	// TypeScript static analysis is unable to track filtering out types
 
-	const clearFromArchiveDateCache: number = await clearFromArchiveDate();
+	const clearFromArchiveDateCache: number = await clearFromArchiveDate(new Date());
 
 	// Prepare expired tabs for archival
 	// Do not store private window tabs in the archive.
@@ -64,6 +64,7 @@ async function removeTabs(expiredTabs: browser.tabs.Tab[]): Promise<void> {
 }
 
 async function removeExpiredTabs(): Promise<void> {
+	// Find and remove tabs
 	const expiredTabs: browser.tabs.Tab[] = await findExpiredTabs();
 	return removeTabs(expiredTabs);
 }

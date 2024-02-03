@@ -45,6 +45,6 @@ Note for Mozilla Add-on review: The _Unsafe assignment to innerHTML_ warning is 
 
 ## Copyright
 
-©2019–2023 Jeremiah Lee. [Mozilla Public License Version 2.0](LICENSE.md)
+©2019–2024 Jeremiah Lee. [Mozilla Public License Version 2.0](LICENSE.md)
 
 “Tab Tosser” and the tab hat smiley face are trademarks of Jeremiah Lee.

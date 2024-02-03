@@ -20,7 +20,6 @@ async function archiveTabs(tabsArchive: TabArchive[]): Promise<void> {
 	await countClosedTabs(tabsArchive.length);
 
 	// Save the tab archive
-	// Wait, as not doing so can lead to tabs not getting saved in first run
 	await save(closedTabs);
 }
 
