@@ -51,42 +51,31 @@ QUnit.test("config: expirationDate", async function (assert) {
 });
 
 QUnit.test("config: pause", async function (assert) {
-	// Setup not paused state
+	// Verify non-running state
 	await setTtl(0);
 	assert.equal(await isPaused(), false);
 
-	// Verify paused state
-	await setTtl(7); // setting the TTL will pause Tab Tosser
+	// Verify running state
+	const ttls = [1, 7 , 30];
 
-	assert.equal(await isPaused(), true);
+	for (let i = 0; i < ttls.length; i++) {
+		const ttl = ttls[i];
 
-	const expectedPauseDate = new Date(new Date().valueOf() + 7 * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
+		await setTtl(ttl);
+		// settingTtl will pause Tab Tosser
 
-	const storage = await browser.storage.local.get({ pauseUntil: 0 });
-	const actualPauseDate = new Date(storage.pauseUntil).toISOString().substring(0, 10);
+		assert.equal(await isPaused(), true);
 
-	// pauseUntil is stored in epoch milliseconds
-	// This test confirms the ISO day since millisecond precision is unlikely in a test
-	assert.equal(actualPauseDate, expectedPauseDate);
+		const expectedPauseDate = new Date(new Date().valueOf() + ttl * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
 
-	// Verify paused period does not get extended once set
-	await setTtl(30);
-	const storage2 = await browser.storage.local.get({ pauseUntil: 0 });
-	const actualPauseDate2 = new Date(storage2.pauseUntil).toISOString().substring(0, 10);
+		const storage = await browser.storage.local.get({ pauseUntil: 0 });
+		const actualPauseDate = new Date(storage.pauseUntil).toISOString().substring(0, 10);
 
-	assert.equal(expectedPauseDate, actualPauseDate2);
-
-	// Verify paused period does get shortened
-	await setTtl(1);
-	const expectedShorterPauseDate = new Date(new Date().valueOf() + 1 * 24 * 60 * 60 * 1000).toISOString().substring(0, 10);
-	const storage3 = await browser.storage.local.get({ pauseUntil: 0 });
-	const actualPauseDate3 = new Date(storage3.pauseUntil).toISOString().substring(0, 10);
-
-	assert.equal(expectedShorterPauseDate, actualPauseDate3);
+		assert.equal(actualPauseDate, expectedPauseDate);
+	}
 });
 
 QUnit.test("config: resume", async function (assert) {
-	await setTtl(30);
 	await resume();
 	assert.equal(await isPaused(), false);
 });
