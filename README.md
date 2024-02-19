@@ -1,6 +1,6 @@
 # Tab Tosser
 
-Tab Tosser is a Firefox extension that automatically closes tabs you have ignored for too long.
+Tab Tosser is a browser extension that automatically closes tabs you have ignored for too long.
 
 - [Project home](https://www.jeremiahlee.com/tab-tosser/)
 - [Install from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/tab-tosser/)
@@ -29,7 +29,7 @@ These are the permissions specified in manifest.json and the justification for r
 
 ## Build instructions
 
-Building and testing requires Node.js. The version is noted in `package.json`. I use macOS 13.
+Building and testing requires Node.js. The version is noted in `package.json`. I use macOS 14.
 
 To build: `npm run build`
 
@@ -45,6 +45,6 @@ Note for Mozilla Add-on review: The _Unsafe assignment to innerHTML_ warning is 
 
 ## Copyright
 
-©2019–2024 Jeremiah Lee. [Mozilla Public License Version 2.0](LICENSE.md)
+©2019–2024 Jeremiah Lee. [European Union Public License 1.1](LICENSE.md)
 
 “Tab Tosser” and the tab hat smiley face are trademarks of Jeremiah Lee.
